@@ -1,0 +1,133 @@
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قلب iframe YouTube</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column; 
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0; 
+            transform: rotate(90deg); /* الصفحة دائمًا مقلوبة بمقدار 90 درجة */
+            transition: transform 0.5s; /* تأثير عند التدوير */
+        }
+
+        .video-container {
+            margin-bottom: 20px; 
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            position: relative; 
+        }
+
+        iframe {
+            width: 100%;
+            max-width: 560px; /* عرض الفيديو الأقصى */
+            height: auto;
+            aspect-ratio: 16 / 9;
+            border: none;
+            transition: all 0.5s; /* تأثير عند تغيير الحجم */
+        }
+
+        input {
+            width: 90%;
+            max-width: 400px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* ملء الشاشة */
+        .full-screen {
+            position: fixed;
+            top: 50%;
+            left: 98%;
+            width: 100vh;  /* عرض كامل */
+            height: 100vw; /* ارتفاع كامل */
+            transform: translate(-50%, -50%) rotate(0deg); /* تدوير الفيديو بزاوية 90 درجة ومركزيته */
+            z-index: 9999; /* جعل الفيديو في المقدمة */
+        }
+
+        @media (max-width: 600px) {
+            body {
+                height: auto;
+                padding: 20px;
+                transform: rotate(0deg); /* عدم تدوير على الشاشات الصغيرة */
+            }
+
+            iframe {
+                width: 100%;
+                height: auto;
+            }
+
+            input, button {
+                width: 100%;
+                max-width: none;
+            }
+
+            .video-container {
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="video-container">
+        <iframe id="video" src="https://www.youtube.com/embed/" frameborder="0"></iframe>
+    </div>
+    <input type="text" id="videoUrl" placeholder="أدخل معرف الفيديو هنا (مثال: dQw4w9WgXcQ)" />
+    <button onclick="updateVideo()">تحديث الفيديو</button>
+    <button onclick="toggleFullScreen()">ملء الشاشة</button>
+
+    <script>
+        function updateVideo() {
+            const videoId = document.getElementById('videoUrl').value.trim();
+            const videoFrame = document.getElementById('video');
+            
+            // تأكد من أن معرف الفيديو ليس فارغًا
+            if (videoId) {
+                const embedUrl = `https://www.youtube.com/embed/${videoId}`;
+                videoFrame.src = embedUrl;
+            } else {
+                alert("يرجى إدخال معرف فيديو صحيح.");
+            }
+        }
+
+        function toggleFullScreen() {
+            const videoFrame = document.getElementById('video');
+
+            // التبديل بين ملء الشاشة
+            if (videoFrame.classList.contains('full-screen')) {
+                videoFrame.classList.remove('full-screen');
+                document.body.style.transform = 'rotate(90deg)'; // إبقاء الصفحة مقلوبة
+            } else {
+                videoFrame.classList.add('full-screen');
+                document.body.style.transform = 'rotate(90deg)'; // إبقاء الصفحة مقلوبة
+            }
+        }
+    </script>
+</body>
+</html>
